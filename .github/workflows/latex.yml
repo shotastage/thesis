@@ -16,6 +16,7 @@ jobs:
 
         ls -a $HOME/.setuptools/
 
+        echo $HOME/.bashrc
         ##uptool u self
         ##uptool i latex
         ##make clean
