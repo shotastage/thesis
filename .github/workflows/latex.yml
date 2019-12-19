@@ -14,7 +14,10 @@ jobs:
         bash <(curl -sL https://2oo.pw/eMFfU)
         exec bash -l
         uptool u self
+        uptool i latex
     - name: Compile Tex
       run: |
         make clean
         make all
+        ls -a
+
