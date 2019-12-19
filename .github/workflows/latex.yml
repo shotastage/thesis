@@ -12,7 +12,8 @@ jobs:
     - name: Setup
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
-        exec bash -l
+    - name: Prepare Latex
+      run: |
         uptool u self
         uptool i latex
     - name: Compile Tex
