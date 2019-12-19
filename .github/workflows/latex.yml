@@ -13,6 +13,7 @@ jobs:
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
         echo "::add-path::~/.setuptools/bin/"
+        echo $PATH
         uptool u self
         uptool i latex
         make clean
