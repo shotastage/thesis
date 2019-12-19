@@ -13,7 +13,10 @@ jobs:
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
         source $HOME/.bashrc
-        uptool u self
-        uptool i latex
-        make clean
-        make all
+
+        ls -a $HOME/.setuptools/
+
+        ##uptool u self
+        ##uptool i latex
+        ##make clean
+        ##make all
