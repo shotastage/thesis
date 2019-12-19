@@ -13,6 +13,7 @@ jobs:
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
         export PATH=\$PATH:~/.setuptools/bin/
+        ls /usr/bin/ | grep "sh"
         uptool u self
         uptool i latex
         make clean
