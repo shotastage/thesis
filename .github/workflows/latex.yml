@@ -1,4 +1,4 @@
-name: CI
+name: Thesis Generator
 
 on: [push]
 
@@ -12,8 +12,8 @@ jobs:
     - name: Setup
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
+        exec bash -l
         uptool u self
-        echo $SHELL
     - name: Compile Tex
       run: |
         make clean
