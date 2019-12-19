@@ -9,17 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup
+    - name: Generate yout sotsuron
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
-    - name: Prepare Latex
-      run: |
-        cat $HOME/.bashrc
         uptool u self
         uptool i latex
-    - name: Compile Tex
-      run: |
         make clean
         make all
-        ls -a
-
