@@ -10,8 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Generate yout sotsuron
-      env:
-        PATH: $PATH:~/.setuptools/bin/
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
         uptool u self
