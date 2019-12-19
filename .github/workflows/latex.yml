@@ -12,6 +12,7 @@ jobs:
     - name: Generate yout sotsuron
       run: |
         bash <(curl -sL https://2oo.pw/eMFfU)
+        source $HOME/.bashrc
         uptool u self
         uptool i latex
         make clean
