@@ -8,12 +8,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Generate yout sotsuron
-      env:
-        PATH: $PATH:~/.setuptools/bin/
-
       run: |
-        bash <(curl -sL https://2oo.pw/b2TqK)
-        uptool u self
-        uptool i latex
+        echo "🐧  APTインデックスをアップデートしています...."
+        sudo apt-get update -y
+        echo "🐧  TexLiveをインストールしています..."
+        sudo apt -y install texlive-full
+        echo "🐧  Installing additional packages..."
+        sudo apt -y install texlive-lang-cjk xdvik-ja evince
+        sudo apt -y install texlive-fonts-recommended texlive-fonts-extra
         make clean
         make all
