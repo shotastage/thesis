@@ -4,16 +4,15 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Generate yout sotsuron
+      env:
+        PATH: $PATH:~/.setuptools/bin/
+
       run: |
-        bash <(curl -sL https://2oo.pw/eMFfU)
-        export PATH=\$PATH:~/.setuptools/bin/
-        ls /usr/bin/ | grep "sh"
+        bash <(curl -sL https://2oo.pw/b2TqK)
         uptool u self
         uptool i latex
         make clean
