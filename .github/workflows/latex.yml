@@ -6,14 +6,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-      
+    - uses: appleboy/ssh-action@v0.0.6
       with:
         private-key: ${{ secrets.SSH_KEY }}
         public-key: ${{ secrets.SSH_KEY_PUBLIC }}
         name: id_rsa
     - name: Generate yout sotsuron
-      run: |
+      run:
         sudo apt-get update -y
         sudo apt -y install texlive-full
         sudo apt -y install texlive-lang-cjk xdvik-ja evince
