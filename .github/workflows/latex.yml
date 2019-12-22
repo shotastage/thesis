@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - with:
+        private-key: ${{ secrets.SSH_KEY }}
+        public-key: ${{ secrets.SSH_KEY_PUBLIC }}
+        name: id_rsa
     - name: Generate yout sotsuron
       run: |
         sudo apt-get update -y
