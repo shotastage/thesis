@@ -6,11 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: appleboy/ssh-action@v0.0.6
-      with:
-        private-key: ${{ secrets.SSH_KEY }}
-        public-key: ${{ secrets.SSH_KEY_PUBLIC }}
-        name: id_rsa
+    - uses: actions/checkout@v1
     - name: Generate yout sotsuron
       run:
         sudo apt-get update -y
@@ -19,5 +15,4 @@ jobs:
         sudo apt -y install texlive-fonts-recommended texlive-fonts-extra
         make clean
         make all
-        git clone git@github.com:shotastage/shotastage.github.io.git
-        mv thesis.pdf ./shotastage.github.io/
+    
