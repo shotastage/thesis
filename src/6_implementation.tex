@@ -19,11 +19,24 @@
   \caption{システムの関係図}  \label{sample}
 \end{figure}
 
-  
+\section{Deep Q Neural Network Model}
+
+このプログラムはDeep Q Nueral Networkによる強化学習を行うプログラムである. 実装言語はPythonである.
+
+
+
+\section{Data Serializer}
+
+Data SerializerはPostgreSQLサーバー上に記録された経路などの地理データーを上述したDeep Q Neural Network
+に学習させるためのデーター変換を行うプログラムである.
+開発言語はPythonであり, 一部データーベースとの接続部分にC++を用いた.
+
+
 
 \section{可視化地図アプリケーション}
 
-モビリティの動きを地図上に可視化するアプリケーションの作成を行った. このアプリケーションは
+モビリティの動きを地図上に可視化するアプリケーションの作成を行った. このアプリケーションはDeep Q Neural Networkの学習済モデルが
+下した意思決定つまり経路を地図上にアイコンとして再現し, 乗車している人間に関しての情報を統合して閲覧できるようにしたものである.
 
 \begin{table}[htb]
     \centering
