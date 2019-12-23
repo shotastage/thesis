@@ -31,7 +31,6 @@ dvi : $(NAME).tex
 	$(LATEX) $(NAME).tex
 	$(BIBTEX) $(NAME)
 	$(LATEX) $(NAME).tex
-	cp thesis.pdf kari_NECO_shotan_thesis.pdf
 	cp thesis.pdf hon_NECO_shotan_thesis.pdf
 clean:
 	rm -f $(NAME).aux $(NAME).bbl $(NAME).blg $(NAME).dvi $(NAME).lof $(NAME).log $(NAME).lot $(NAME).out.ps $(NAME).pdf $(NAME).toc
