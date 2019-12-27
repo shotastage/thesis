@@ -35,3 +35,5 @@ dvi : $(NAME).tex
 	gpg --batch --yes -u F007FBE7 -b hon_NECO_shotan_thesis.pdf
 clean:
 	rm -f $(NAME).aux $(NAME).bbl $(NAME).blg $(NAME).dvi $(NAME).lof $(NAME).log $(NAME).lot $(NAME).out.ps $(NAME).pdf $(NAME).toc
+sync:
+	./tools/git-update.sh
