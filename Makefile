@@ -37,3 +37,5 @@ clean:
 	rm -f $(NAME).aux $(NAME).bbl $(NAME).blg $(NAME).dvi $(NAME).lof $(NAME).log $(NAME).lot $(NAME).out.ps $(NAME).pdf $(NAME).toc
 sync:
 	./tools/git-update.sh
+verify:
+	gpg --quiet --verify hon_NECO_shotan_thesis.pdf.sig hon_NECO_shotan_thesis.pdf
