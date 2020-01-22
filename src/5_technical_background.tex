@@ -27,11 +27,21 @@
     \caption{強化学習による経路検索の結果}  \label{sample}
 \end{figure}
 
+\section{Q学習}
+
+Q学習とは初期に考案されたReinforest Learningアルゴリズムの一種であり, 強化学習と呼ばれす.
+
+Q学習による試行は以下のように定義する.
+\begin{equation}
+    Q(s, a) \approx R(s, a) + \gamma max_{a'} E[Q(s', a')]
+\end{equation}
+
 \section{Deep Q Neural Network}
 
 Deep Q Neural Network(DQN~\cite{DQN})はQ学習という強化学習における古典的なアルゴリズムを深層強化学習に応用したものである.
+Q学習とは強化学習の一種である. Q学習では実行するルールに対してQ値という値を持たせる.
 
-
+DQNは深層強化学習とも呼ばれる.
 
 %%% Local Variables:
 %%% mode: japanese-latex

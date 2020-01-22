@@ -39,3 +39,6 @@ sync:
 	./tools/git-update.sh
 verify:
 	gpg --quiet --verify hon_NECO_shotan_thesis.pdf.sig hon_NECO_shotan_thesis.pdf
+save:
+	git add .
+	git commit -m "Update on `date "+%Y%m%d_%H%M%S"`"
