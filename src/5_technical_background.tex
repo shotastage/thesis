@@ -1,37 +1,46 @@
 \chapter{要素技術}
 \label{technical_background}
 
-本章では要素技術について述べる
+本章では本研究に用いる手法に関連する要素技術について述べる
 
 
 \section{機械学習}
 
 機械学習とは広義には, コンピューターが自動的にパターンを学習し人間による明示的な命令がなくとも
 特定の課題を自動で実行する技術又はアルゴリズムのことである. 主に, 正解データを与えることによってパターンを学習する教師あり学習, データのまとまりや相関を求める教師なし学習と強化学習に分類される.
+画像処理や自然言語処理など様々な分野に応用が進んでおり, 画像の検知や自動翻訳など機械学習によって自動化されているものも多い.
 
 
-\section{深層学習}
+\subsection{深層学習}
 
 深層学習とは脳が持つ脳神経系をソフトウェアで再現した人工ニューラルネット(ANN)を持つ機械学習アルゴリズムの一つである. 
 人間の脳を模したパーセプトロンによる深層学習自体は1957年から提唱されていた. 4層以上のパーセプトロンでは過学習や勾配消失問題が発生しコンピューテーションコストも大きいためあまり普及しなかった.
+しかし, 安価なコンピューターでも計算速度が飛躍的に向上したことや勾配消失問題を防止する手法が考案されたことなどから再び注目を集めるようになり, 
 
-\section{深層強化学習}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[clip,height = 8.0cm]{assets/perceptron.eps}
+    \caption{パーセプトロン}  \label{sample}
+\end{figure}
+
+\subsection{深層強化学習}
 
 深層強化学習とは, 強化学習に深層学習を組み合わせた機械学習アルゴリズムである.
 強化学習はエージェントとエージェントが動作する環境を定義し, 定義された環境下でエージェントへの報酬が最大化するように学習は行う.
 
 
 \begin{figure}[H]
-    \centering  % 図を真ん中に配置
+    \centering
     \includegraphics[clip,width = 12.0cm]{assets/reinforcement_learning.eps}
-    \caption{強化学習による経路検索の結果}  \label{sample}
+    \caption{強化学習の概念図}  \label{sample}
 \end{figure}
 
 \section{Q学習}
 
 Q学習とは初期に考案されたReinforest Learningアルゴリズムの一種であり, 強化学習と呼ばれす.
-
 Q学習による試行は以下のように定義する.
+
 \begin{equation}
     Q(s, a) \approx R(s, a) + \gamma max_{a'} E[Q(s', a')]
 \end{equation}
@@ -42,6 +51,7 @@ Deep Q Neural Network(DQN~\cite{DQN})はQ学習という強化学習における
 Q学習とは強化学習の一種である. Q学習では実行するルールに対してQ値という値を持たせる.
 
 DQNは深層強化学習とも呼ばれる.
+
 
 %%% Local Variables:
 %%% mode: japanese-latex
