@@ -75,6 +75,40 @@ DockerはOS仮想化システムの一種である. VirtualBoxやVMWare Workstat
 \textbf{end for}
 
 
+\section{環境定義クラス}
+
+\begin{lstlisting}[caption = 環境を構築するクラス, label = program1]
+
+
+  class CATPEnvironment:
+
+  def __init__(self, evaluator, step_t):
+      self._evaluator = evaluator
+      self._step = step_t
+      self._rewords = [ ]
+
+  # Register or memory agent action flow.
+  def act(self, act_obj):
+      res = act_obj.run()
+      rewords = self._evaluator(res)
+
+      self._rewords.append(rewords)
+  
+  # Calculate environment diff and save environment.
+  def commit(self):
+      return sum(self._rewords)
+  
+  # Clear all environment to initial.
+  def reset(self):
+      total_reword = sum(self._rewords)
+
+  def _capacity_validate(self, route_id):
+      if True:
+          return -10 
+\end{lstlisting}
+  
+
+
 \section{本実験における前提}
 
 本実験では道路交通網をソフトウェアプログラムにより擬似的に再現する. その際に、実験を短略化させ結果が発生する要因を掴みやすくするため以下の条件を適用する.
