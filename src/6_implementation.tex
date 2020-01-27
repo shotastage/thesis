@@ -79,8 +79,7 @@ DockerはOS仮想化システムの一種である. VirtualBoxやVMWare Workstat
 
 \begin{lstlisting}[caption = 環境を構築するクラス, label = program1]
 
-
-  class CATPEnvironment:
+class CATPEnvironment:
 
   def __init__(self, evaluator, step_t):
       self._evaluator = evaluator
@@ -104,9 +103,76 @@ DockerはOS仮想化システムの一種である. VirtualBoxやVMWare Workstat
 
   def _capacity_validate(self, route_id):
       if True:
-          return -10 
+          return -10
 \end{lstlisting}
   
+
+
+
+
+\begin{lstlisting}[caption = 行動を定義するクラス, label = program1]
+
+class CATPAction:
+
+  def __init__(self):
+    pass
+
+  def reset(self):
+    print("Reset environment")
+
+  # Register agent action to environment
+  def act(self, act_obj):
+    pass
+
+  # Calculate environment diff
+  def commit(self):
+    print("Committing environment...")
+
+  def _capacity_validate(self, route_id):  
+    if True:
+        return -10  
+\end{lstlisting}
+  
+  
+
+
+\begin{lstlisting}[caption = DQNの深層学習部分を形成するモデル, label = program1]
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import (
+  Dense,
+  Activation,
+  Flatten,
+  Convolution2D,
+  Permute
+)
+from tensorflow.keras.optimizers import Adam
+import tensorflow.keras.backend as K
+
+
+def dqnmodel():
+    model = Sequential()
+
+    # (width, height, channels)
+    model.add(Permute((2, 3, 1), input_shape=input_shape))
+
+    model.add(Convolution2D(32, (8, 8), strides=(4, 4)))
+    model.add(Activation('relu'))
+    model.add(Convolution2D(64, (4, 4), strides=(2, 2)))
+    model.add(Activation('relu'))
+    model.add(Convolution2D(64, (3, 3), strides=(1, 1)))
+    model.add(Activation('relu'))
+    model.add(Flatten())
+    model.add(Dense(512))
+    model.add(Activation('relu'))
+    model.add(Dense(nb_actions))
+    model.add(Activation('linear'))
+
+    return model
+
+
+\end{lstlisting}
+
+
 
 
 \section{本実験における前提}
