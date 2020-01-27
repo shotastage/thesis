@@ -5,8 +5,8 @@
 
 \section{概要}
 
-本研究では, 以下に述べるコンピュータープログラムを実装し, モビリティや人の動きをコンピューター上で再現する.
-作成するプログラムは　第一は, 強化学習モデルを生成する機械学習プログラムと
+本研究では, 以下に述べるコンピュータープログラムを作成し, モビリティや利用者の満足度の変化をコンピューター上で再現する.
+作成するプログラムは深層強化学習を行う学習器と環境定義プログラムである.
 
 \section{構成}
 
@@ -19,11 +19,68 @@
   \caption{システムの関係図}  \label{sample}
 \end{figure}
 
+
+
+
+\begin{table}[h]
+  \caption{実験に使用したソフトウェア一覧と役割}
+  \label{table:SpeedOfLight}
+  \centering
+  \begin{tabular}{clll}
+    \hline
+      名称 & 役割 \\
+      \hline \hline
+      PostgreSQL & 道路データの管理 \\
+      PostGIS & 地理データの表現と格納 \\
+      pgAdmin & 地理データのビジュアライズ \\
+      QGIS & Open Street Mapの情報読み込み及地理データの閲覧 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
 \section{Deep Q Neural Network Model}
 
-このプログラムはDeep Q Nueral Networkによる強化学習を行うプログラムである. 実装言語はPythonである.
+この実験ではDeep Q Nueral Networkによる強化学習を行う学習器を構築するプログラムをPython言語を用いて作成した.
+このプログラムは深層強化学習を形成するニューラルネットワークを定義したプログラムである.
+ライブラリとしてTensorFlow及びKerasを用いた.
 
 
+\begin{lstlisting}[caption = DQNの深層学習部分を形成するモデル, label = program1]
+  from tensorflow.keras.models import Sequential
+  from tensorflow.keras.layers import (
+    Dense,
+    Activation,
+    Flatten,
+    Convolution2D,
+    Permute
+  )
+  from tensorflow.keras.optimizers import Adam
+  import tensorflow.keras.backend as K
+  
+  
+  def dqnmodel():
+      model = Sequential()
+  
+      # (width, height, channels)
+      model.add(Permute((2, 3, 1), input_shape=input_shape))
+  
+      model.add(Convolution2D(32, (8, 8), strides=(4, 4)))
+      model.add(Activation('relu'))
+      model.add(Convolution2D(64, (4, 4), strides=(2, 2)))
+      model.add(Activation('relu'))
+      model.add(Convolution2D(64, (3, 3), strides=(1, 1)))
+      model.add(Activation('relu'))
+      model.add(Flatten())
+      model.add(Dense(512))
+      model.add(Activation('relu'))
+      model.add(Dense(nb_actions))
+      model.add(Activation('linear'))
+  
+      return model  
+\end{lstlisting}
+  
+  
 
 \section{Data Serializer}
 
@@ -134,44 +191,6 @@ class CATPAction:
 \end{lstlisting}
   
   
-
-
-\begin{lstlisting}[caption = DQNの深層学習部分を形成するモデル, label = program1]
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import (
-  Dense,
-  Activation,
-  Flatten,
-  Convolution2D,
-  Permute
-)
-from tensorflow.keras.optimizers import Adam
-import tensorflow.keras.backend as K
-
-
-def dqnmodel():
-    model = Sequential()
-
-    # (width, height, channels)
-    model.add(Permute((2, 3, 1), input_shape=input_shape))
-
-    model.add(Convolution2D(32, (8, 8), strides=(4, 4)))
-    model.add(Activation('relu'))
-    model.add(Convolution2D(64, (4, 4), strides=(2, 2)))
-    model.add(Activation('relu'))
-    model.add(Convolution2D(64, (3, 3), strides=(1, 1)))
-    model.add(Activation('relu'))
-    model.add(Flatten())
-    model.add(Dense(512))
-    model.add(Activation('relu'))
-    model.add(Dense(nb_actions))
-    model.add(Activation('linear'))
-
-    return model
-
-
-\end{lstlisting}
-
 
 
 
