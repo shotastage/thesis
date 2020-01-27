@@ -60,10 +60,27 @@ Q学習による試行は以下のように定義する.
 
 \section{Deep Q Neural Network}
 
-Deep Q Neural Network(DQN~\cite{DQN})はQ学習という強化学習における古典的なアルゴリズムを深層強化学習に応用したものである.
-Q学習とは強化学習の一種である. Q学習では実行するルールに対してQ値という値を持たせる.
+Deep Q Neural Network(DQN~\cite{DQN})の一種でQ学習という強化学習における古典的なアルゴリズムを深層強化学習に応用したものである.
+\textcolor{red}{ちょと再考}
+Q学習~\cite{QL}とは強化学習の一種である. Q学習~\cite{QL}では実行するルールに対してQ値という値を持たせる.
 
-DQNは深層強化学習とも呼ばれる.
+DQNの深層学習部分はCNN~\cite{DQN}で構成される.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[clip,height = 8.0cm]{assets/dqn_convolution.eps}
+    \caption{DQNを構成するCNN}  \label{sample}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[clip,height = 8.0cm]{assets/CNN_typical.eps}
+    \caption{一般的なConvolutional Neural Network}  \label{sample}
+\end{figure}
+
 
 
 %%% Local Variables:
