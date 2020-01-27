@@ -18,12 +18,44 @@
 \subsection{路線網の正規化}
 
 本研究では実際の道路網を参考に仮想の道路網モデルを構築した.
+選び出したルートの正則化を行った。実際の地図上にある道路のPOLYLINEデータは道路路線上の点の集合体であり, これを結んだ線分として記録されている. しかし, DQN機械学習モデルでは限られた次元数の行列データしか扱うことができず, そのままではDQNに学習させることができない。
+そこで、本研究では、１つのPOLYLINEを交差点毎に分解し交差点に挟まれた１区間を行列の１次元に表し１つの要素とした.
+この場合, 区間の距離に関わらず１次元の要素として表すため距離情報が失われる. 従って, ここでは距離を通過難易度dとして環境定義することで距離データを失わないようにした.
+
 
 
 \begin{figure}[H]
     \centering  % 図を真ん中に配置
-    \includegraphics[clip,width = 13.0cm]{assets/map_origin.eps}
-    \caption{ベースとなった場所付近の地図}  \label{sample}
+    \includegraphics[clip,width = 13.0cm]{assets/MAP_1.eps}
+    \caption{地図上の道路を選択する}  \label{sample}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 13.0cm]{assets/MAP_2.eps}
+    \caption{交差点箇所にマークをつける}  \label{sample}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 13.0cm]{assets/MAP_3.eps}
+    \caption{地図を省いて路線網だけにした図}  \label{sample}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 13.0cm]{assets/MAP_4.eps}
+    \caption{曲線部分を省き直線化する}  \label{sample}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 13.0cm]{assets/MAP_5.eps}
+    \caption{区間の長さを等しく正方形にする}  \label{sample}
 \end{figure}
 
 
