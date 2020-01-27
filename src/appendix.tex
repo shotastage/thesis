@@ -4,6 +4,7 @@
 
 \section{本研究の実験に用いたDocker環境にインストールしたPythonパッケージ}
 
+下記はpip freeze\footnote{pipはPythonのライブラリなどをインストールするパッケージマネージャー}コマンドの実行結果である. 本研究の実験に使用したDockerコンテナ上のOSには以下のPythonパッケージを用いている.
 
 \begin{lstlisting}[caption = pip freezeコマンドの実行結果, label = program1]
     absl-py==0.9.0
@@ -119,9 +120,9 @@
 
 \section{実験を行ったDockerコンテナの定義ファイル}
 
+本研究では以下の定義ファイルを使用してDocker実験用環境\footnote{docker-compose upコマンドによりDockerfile, docker-compose.yml両定義ファイルに従ったコンテナが作成される}を構築した.
 
 \begin{lstlisting}[caption = Dockerfileの定義, label = program1]
-
 FROM tensorflow/tensorflow:latest-py3-jupyter
 LABEL maintainer="shotastage"
 RUN apt-get update -y
