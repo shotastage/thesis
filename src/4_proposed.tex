@@ -15,6 +15,54 @@
     \item 人間の目的を正確に推定するコンピューターシステムもしくはセンサーなどは実在しているものとする. 
 \end{itemize}
 
+\subsection{路線網の正規化}
+
+本研究では実際の道路網を参考に仮想の道路網モデルを構築した.
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 13.0cm]{assets/map_origin.eps}
+    \caption{ベースとなった場所付近の地図}  \label{sample}
+\end{figure}
+
+
+\subsection{選択した道路のデータ化}
+
+選択した道路の線形をPostgreSQLにてデータ化を行った. なお, この実験で使用したPostgreSQLには地理情報を扱う拡張であるPostGISをインストールしている.
+データ化した内容は, 道路網の一定間隔の座標である. この座標同士を結ぶ線分をPOLYLINE型で記憶し路線名や道路が受け入れることのできる車の第数=Capacityを定義した.
+
+\begin{lstlisting}[caption = 路線データを表すクエリーの例, label = program1]
+
+/*
+    テーブル構造の定義
+*/
+CREATE TABLE geodb_catp_yokohama (
+    id                  serial PRIMARY KEY,
+    route_name          VARCHAR (100),
+    has_spot    VARCHAR (20),
+    capacity            INTEGER
+);
+
+/*
+    線地理情報を記録するPOLYLINE型のカラムを追加
+*/
+SELECT AddGeometryColumn ('public', 'geodb_catp_yokohama', 'geometry_data', 4326, 'LINESTRING', 2);
+
+/*
+    道路の線形を表すデータのレコード
+*/
+INSERT INTO geodb_catp_yokohama (route_name, has_spot, capacity, geometry_data)
+VALUES ('K1',
+        'none',
+        200,
+        ST_GeomFromText('LINESTRING(139.633639 35.445911, 139.632631 35.447126 ...... 139.632323 35.472085)', 4326));
+\end{lstlisting}
+
+    
+    
+    
+
 
 %%% Local Variables:
 %%% mode: japanese-latex
