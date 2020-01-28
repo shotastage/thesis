@@ -9,10 +9,10 @@ jobs:
     - uses: actions/checkout@v1
     - name: Generate yout sotsuron
       run:
-        sudo apt-get update -y
-        sudo apt -y install texlive-full
-        sudo apt -y install texlive-lang-cjk xdvik-ja evince
-        sudo apt -y install texlive-fonts-recommended texlive-fonts-extra
-        make clean
-        make all
+        - sudo apt-get update -y
+        - sudo apt -y install texlive-full
+        - sudo apt -y install texlive-lang-cjk xdvik-ja evince
+        - sudo apt -y install texlive-fonts-recommended texlive-fonts-extra
+        - make clean
+        - make all
     
