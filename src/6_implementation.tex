@@ -10,13 +10,15 @@
 
 \section{構成}
 
-この実験での各プログラムやミドルウェアの関係性をいかに示す.
-
+この実験での各プログラムやミドルウェアの関係性を~\ref{system_overview}に示す.
+pgAdmin~\cite{pgadmin}では, 地図データから選んだ道路の線形データを作成している. その後, 線形データはMap Vectorizerにて正方行列データに変換される.
+正方行列に変換された道路データはCNN~\cite{CNN}に入力され, 行動がアウトプットとして出力される. アウトプットされた行動は環境構成プログラムεに入力される.
+εはユースケースを定義したクラスと距離表現クラスに定義された内容を基に演算を行い報酬を決定する.
 
 \begin{figure}[H]
   \centering  % 図を真ん中に配置
-  \includegraphics[clip,width = 13.0cm]{assets/system_overview.eps}
-  \caption{システムの関係図}  \label{sample}
+  \includegraphics[clip,width = 13.0cm]{assets/pgs.eps}
+  \caption{システムの関係}  \label{system_overview}
 \end{figure}
 
 
@@ -30,9 +32,9 @@
     \hline
       名称 & 役割 \\
       \hline \hline
-      PostgreSQL & 道路データの管理 \\
+      PostgreSQL~\cite{pgsql} & 道路データの管理 \\
       PostGIS & 地理データの表現と格納 \\
-      pgAdmin & 地理データのビジュアライズ \\
+      pgAdmin~\cite{pgadmin} & 地理データのビジュアライズ \\
       QGIS & Open Street Mapの情報読み込み及地理データの閲覧 \\
     \hline
   \end{tabular}
@@ -43,7 +45,7 @@
 
 本研究では, 実際の道路を参考にいくつかの道路を抜き出した仮装の道路網を作成した.
 選択した道路の線形はPostgreSQLにてデータ化を行った. なお, この実験で使用したPostgreSQLには地理情報を扱う拡張であるPostGISをインストールしている.
-データ化した内容は, 道路網の一定間隔の座標である. この座標同士を結ぶ線分をPOLYLINE型で記憶し路線名や道路が受け入れることのできる車の第数=Capacityを定義した.
+データ化した内容は, 道路網の一定間隔の座標である. この座標同士を結ぶ線分をPOLYLINE型で記憶し路線名や道路が受け入れることのできる車の台数をCapacityとして定義した.
 
 \begin{lstlisting}[caption = 路線データを表すクエリーの例, label = program1]
 
@@ -147,7 +149,7 @@ Data SerializerはPostgreSQLサーバー上に記録された経路などの地�
 \end{table}
 
 
-\section{Docker - 確かにDockerあんまいらん}
+\section{学習用コンテナの作成}
 
 Docker\footnote{DockerはOS仮想化システムの一種である. VirtualBoxなどの完全仮想化
 ソフトウェアとは異なり、ゲストOSの命令セットをホストOSのカーネルの命令セットにコンバートすることにより仮想化を実現している.
@@ -226,36 +228,7 @@ class CATPAction:
         return -10  
 \end{lstlisting}
   
-  
 
-
-
-\section{本実験における前提}
-
-本実験では道路交通網をソフトウェアプログラムにより擬似的に再現する. その際に、実験を短略化させ結果が発生する要因を掴みやすくするため以下の条件を適用する.
-
-
-\begin{table}[h]
-  \caption{本実験で適用する条件}
-  \label{table:SpeedOfLight}
-  \centering
-  \begin{tabular}{clll}
-    \hline
-      条件 & 理由 \\
-      \hline \hline
-      全ての道路は上下線通行可能 & 片道通行は複雑性が増すため  \\
-      通行止めは考えない & 事故や災害などのアクシデント対応は \\ 本研究の趣旨と合わないため \\
-    \hline
-  \end{tabular}
-\end{table}
-
-
-
-\begin{itemize}
-  \item 全ての道路は上下線双方向の通行が可能とする.
-  \item 通行止めの発生は考えないものとする.
-  \item 信号による制御などは考えないものとする.
-\end{itemize}
 
 %%% Local Variables:
 %%% mode: japanese-latex
