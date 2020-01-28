@@ -33,9 +33,9 @@ pgAdmin~\cite{pgadmin}では, 地図データから選んだ道路の線形デ�
       名称 & 役割 \\
       \hline \hline
       PostgreSQL~\cite{pgsql} & 道路データの管理 \\
-      PostGIS & 地理データの表現と格納 \\
+      PostGIS~\cite{postgis} & 地理データの表現と格納 \\
       pgAdmin~\cite{pgadmin} & 地理データのビジュアライズ \\
-      QGIS & Open Street Mapの情報読み込み及地理データの閲覧 \\
+      QGIS~\cite{qgis} & Open Street Mapの情報読み込み及地理データの閲覧 \\
     \hline
   \end{tabular}
 \end{table}
@@ -44,8 +44,17 @@ pgAdmin~\cite{pgadmin}では, 地図データから選んだ道路の線形デ�
 \subsection{仮装道路モデルの作成}
 
 本研究では, 実際の道路を参考にいくつかの道路を抜き出した仮装の道路網を作成した.
-選択した道路の線形はPostgreSQLにてデータ化を行った. なお, この実験で使用したPostgreSQLには地理情報を扱う拡張であるPostGISをインストールしている.
+選択した道路の線形はPostgreSQL~\cite{pgsql}にてデータ化を行った. なお, この実験で使用したPostgreSQL~\cite{pgsql}には地理情報を扱う拡張であるPostGIS~\cite{postgis}をインストールしている.
 データ化した内容は, 道路網の一定間隔の座標である. この座標同士を結ぶ線分をPOLYLINE型で記憶し路線名や道路が受け入れることのできる車の台数をCapacityとして定義した.
+
+
+\begin{figure}[H]
+  \centering  % 図を真ん中に配置
+  \includegraphics[clip,width = 13.0cm]{assets/scn1.eps}
+  \caption{pgadminにて道路データを地上に可視化した画面}  \label{system_overview}
+\end{figure}
+
+
 
 \begin{lstlisting}[caption = 路線データを表すクエリーの例, label = program1]
 
@@ -99,8 +108,7 @@ VALUES ('K1',
   def dqnmodel():
       model = Sequential()
   
-      # (width, height, channels)
-      model.add(Permute((2, 3, 1), input_shape=input_shape))
+      model.add(Permute((17, 17, 1), input_shape=input_shape))
   
       model.add(Convolution2D(32, (8, 8), strides=(4, 4)))
       model.add(Activation('relu'))
@@ -123,30 +131,16 @@ VALUES ('K1',
 
 Data SerializerはPostgreSQLサーバー上に記録された経路などの地理データーを上述したDeep Q Neural Network
 に学習させるためのデーター変換を行うプログラムである.
-開発言語はPythonであり, 一部データーベースとの接続部分にC++を用いた.
-
-選び出したルートの正規化を行った。実際の地図上にある道路のPOLYLINEデータはそのままではDQNに学習させることができない。そこで、本研究では、１つのPOLYLINEを１つの
-
-\section{可視化地図アプリケーション}
-
-モビリティの動きを地図上に可視化するアプリケーションの作成を行った. このアプリケーションはDeep Q Neural Networkの学習済モデルが
-下した意思決定つまり経路を地図上にアイコンとして再現し, 乗車している人間に関しての情報を統合して閲覧できるようにしたものである.
+開発言語はPythonである. PostgreSQLから受け取った道路のPOLYLINEデータから各座標点を抽出し, 座上間を繋いだ
 
 
-\begin{table}[h]
-  \caption{アプリケーション作成に用いたソフトウェアと詳細}
-  \label{table:SpeedOfLight}
-  \centering
-  \begin{tabular}{clll}
-    \hline
-      使用対象 & 使用言語 & フレームワーク/ミドルウェア & OSなど \\
-      \hline \hline
-      可視化アプリケーション & Swift 5.1.3 & UIKit, SwiftUI & iOS \\
-      可視化アプリケーション & JavaScript & ReactNative, JavaScriptCore & iOS \\
-      GIS化データ管理 & pSQL & PostgreSQL 12.1 + PostGIS 3.0 & CoreOS \\
-    \hline
-  \end{tabular}
-\end{table}
+
+\begin{figure}[H]
+  \centering  % 図を真ん中に配置
+  \includegraphics[clip,width = 13.0cm]{assets/map2vector.eps}
+  \caption{地理データをDQNが学習可能な正方行列データに変換する}  \label{map2vector}
+\end{figure}
+
 
 
 \section{学習用コンテナの作成}
