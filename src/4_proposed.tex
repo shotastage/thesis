@@ -17,7 +17,7 @@ DQNを用いて学習させた.
 \end{itemize}
 
 
-\subsection{道路網の正規化}
+\section{道路網の正規化}
 
 本研究では実際の道路網を参考に仮想の道路網モデルを構築した.
 選び出したルートの正則化を行った。実際の地図上にある道路のPOLYLINEデータは道路路線上の点の集合体であり, これを結んだ線分として記録されている. しかし, DQN機械学習モデルでは限られた次元数の行列データしか扱うことができず, そのままではDQNに学習させることができない。
@@ -96,7 +96,43 @@ DQNを用いて学習させた.
 \end{figure}
 
 
+\section{人間のユースケースの定義}
 
+本研究では以下の利用者のユースケースを想定し, これらの目的を満たせるルートを選択した場合にDQNモデルに対して報酬値を与える環境プログラムを作成した.
+
+\begin{table}[h]
+    \caption{実験に利用したユースケース}
+    \label{table:SpeedOfLight}
+    \centering
+    \begin{tabular}{clll}
+      \hline
+        想定した人 & 状態 \\
+        \hline \hline
+        自宅へ帰宅する会社員 & 途中で外食を考えている \\
+        空港へ急行しなければならない旅行客 & 最短時間で行きたいと考えている \\
+        ジュースを飲みたいと思っている人 & 急いではないが, 自販機を利用したい \\
+      \hline
+    \end{tabular}
+  \end{table}
+  
+
+
+
+\section{DQNモデルによる学習}
+
+DQNモデルによる経路探索を行う. DQNには図~\ref{ll_tensor}のような13x13次元の正方行列を入力する.
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 11.0cm]{assets/MAP_6.eps}
+    \caption{入力する正方行列の例} \label{ll_tensor}
+\end{figure}
+  
+
+\subsection{環境}
+
+エージェントが活動する環境を定義する.
 
 %%% Local Variables:
 %%% mode: japanese-latex
