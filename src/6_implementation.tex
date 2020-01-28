@@ -39,6 +39,41 @@
 \end{table}
 
 
+\subsection{仮装道路モデルの作成}
+
+本研究では, 実際の道路を参考にいくつかの道路を抜き出した仮装の道路網を作成した.
+選択した道路の線形はPostgreSQLにてデータ化を行った. なお, この実験で使用したPostgreSQLには地理情報を扱う拡張であるPostGISをインストールしている.
+データ化した内容は, 道路網の一定間隔の座標である. この座標同士を結ぶ線分をPOLYLINE型で記憶し路線名や道路が受け入れることのできる車の第数=Capacityを定義した.
+
+\begin{lstlisting}[caption = 路線データを表すクエリーの例, label = program1]
+
+/*
+    テーブル構造の定義
+*/
+CREATE TABLE geodb_catp_yokohama (
+    id                  serial PRIMARY KEY,
+    route_name          VARCHAR (100),
+    has_spot    VARCHAR (20),
+    capacity            INTEGER
+);
+
+/*
+    線地理情報を記録するPOLYLINE型のカラムを追加
+*/
+SELECT AddGeometryColumn ('public', 'geodb_catp_yokohama', 'geometry_data', 4326, 'LINESTRING', 2);
+
+/*
+    道路の線形を表すデータのレコード
+*/
+INSERT INTO geodb_catp_yokohama (route_name, has_spot, capacity, geometry_data)
+VALUES ('K1',
+        'none',
+        200,
+        ST_GeomFromText('LINESTRING(139.633639 35.445911, 139.632631 35.447126 ...... 139.632323 35.472085)', 4326));
+\end{lstlisting}
+
+
+
 \section{Deep Q Neural Network Model}
 
 この実験ではDeep Q Nueral Networkによる強化学習を行う学習器を構築するプログラムをPython言語を用いて作成した.

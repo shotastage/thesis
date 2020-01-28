@@ -5,15 +5,17 @@
 
 \section{概要}
 
-本研究では, 人間の状態とモビリティの経路を再現するシミュレータープログラムを開発し実験を行う.
-なお, シミュレータープログラムの作成にあたっては以下について仮定を行った.
+本研究では, 自動車の利用者である人間の状態と道路網を再現を再現するシミュレータープログラムを開発し, 自動車であるモビリティの経路選択を
+DQNを用いて学習させた.
+また, 道路網は計算量の問題などから全ての道を扱うことは困難であるから実在する道を参考に選び出し, 仮装の道路網を設定した.
+なお, 本実験での環境シミュレーターは以下の条件で作成を行った.
 
 \begin{itemize}
-    \item シミュレーター上での自動車は全てレベル５の完全自動運転ができる物とする
-    \item 歩行者や, 自動運転非対応者などは考慮していない
-    \item シミュレーターでは予め決められた幹線道路及, 環状線などのバイパス道路のみを考慮し, それ以外の道に関しては考慮しない
-    \item 人間の目的を正確に推定するコンピューターシステムもしくはセンサーなどは実在しているものとする. 
+    \item 自動車は１区間を全て等速で動くものとする
+    \item 事故や災害などによる道路の不通などアクシデントは一切想定しない
+    \item 人間の状態は予め作成されたユースケースのみを想定する
 \end{itemize}
+
 
 \subsection{道路網の正規化}
 
@@ -22,6 +24,20 @@
 そこで、本研究では、１つのPOLYLINEを交差点毎に分解し交差点に挟まれた１区間を行列の１次元に表し１つの要素とした.
 この場合, 区間の距離に関わらず１次元の要素として表すため距離情報が失われる. 従って, ここでは距離を通過難易度dとして環境定義することで距離データを失わないようにした.
 
+以下に, 道路の正規化の手順を示す.
+
+図~\ref{rs:1}は実際の地図から本研究で取り上げる道路網を線で表したものである. 赤色の線は一度に通行できるcapacityが多い幹線道路としオレンジは赤色と比べて通行可能量が少ない.
+
+次に, 図~\ref{rs:2}は道路のT字路や十字路などの交差点の形は問わず交差点部分に青い円形のマークをつけた. 
+
+図~\ref{rs:3}は図~\ref{rs:2}から背景となる実際の地図を消去したものである. ここまでは, 地図から手動でデータを作成した. このデータからDQNの学習に適したデータ形式へと作成したプログラムを用いて変換する.
+
+図~\ref{rs:4}は図~\ref{rs:3}を直線化させ四角形に近似した物である. これは道路網を多次元配列で表現するための前処理である. なお, この処理を行った時点で道路本来の距離データが失われる.
+
+図~\ref{rs:5}は図~\ref{rs:4}の交差点と交差点の間を１区間とした時, 頂点全てが交差点となる四角形が正方形になるように変換した物である. これにより道路網は正方行列で表現が可能となる.
+
+図~\ref{rs:6}は~\ref{rs:5}似て変換された図形データを正方行列データに変換した物である. ここでは, 通行可能な要素を1とし通行不可能な壁0で隔てることにより道路網を表現している.
+なお, 道路外周に壁を作るために0パディングを行っている.
 
 \begin{figure}[htbp]
     \begin{minipage}{0.5\hsize}
@@ -29,14 +45,14 @@
             \includegraphics[width=70mm]{assets/MAP_1.eps}
         \end{center}
         \caption{地図から道路を選択}
-        \label{fig:one}
+        \label{rs:1}
     \end{minipage}
     \begin{minipage}{0.5\hsize}
         \begin{center}
             \includegraphics[width=70mm]{assets/MAP_2.eps}
         \end{center}
         \caption{交差点をマーク}
-        \label{fig:two}
+        \label{rs:2}
     \end{minipage}
 \end{figure}
 
@@ -48,14 +64,14 @@
             \includegraphics[width=70mm]{assets/MAP_3.eps}
         \end{center}
         \caption{地図を除いた道路図と交差点マーク}
-        \label{fig:one}
+        \label{rs:3}
     \end{minipage}
     \begin{minipage}{0.5\hsize}
         \begin{center}
             \includegraphics[width=70mm]{assets/MAP_4.eps}
         \end{center}
         \caption{曲線を直線化}
-        \label{fig:two}
+        \label{rs:4}
     \end{minipage}
 \end{figure}
 
@@ -68,51 +84,19 @@
             \includegraphics[width=70mm]{assets/MAP_5.eps}
         \end{center}
         \caption{区間の長さを等しく正方形にする}
-        \label{fig:one}
+        \label{rs:5}
     \end{minipage}
     \begin{minipage}{0.5\hsize}
         \begin{center}
             \includegraphics[width=70mm]{assets/MAP_6.eps}
         \end{center}
         \caption{7x7正方行列化した道路網}
-        \label{fig:two}
+        \label{rs:6}
     \end{minipage}
 \end{figure}
 
 
 
-
-\subsection{選択した道路のデータ化}
-
-選択した道路の線形をPostgreSQLにてデータ化を行った. なお, この実験で使用したPostgreSQLには地理情報を扱う拡張であるPostGISをインストールしている.
-データ化した内容は, 道路網の一定間隔の座標である. この座標同士を結ぶ線分をPOLYLINE型で記憶し路線名や道路が受け入れることのできる車の第数=Capacityを定義した.
-
-\begin{lstlisting}[caption = 路線データを表すクエリーの例, label = program1]
-
-/*
-    テーブル構造の定義
-*/
-CREATE TABLE geodb_catp_yokohama (
-    id                  serial PRIMARY KEY,
-    route_name          VARCHAR (100),
-    has_spot    VARCHAR (20),
-    capacity            INTEGER
-);
-
-/*
-    線地理情報を記録するPOLYLINE型のカラムを追加
-*/
-SELECT AddGeometryColumn ('public', 'geodb_catp_yokohama', 'geometry_data', 4326, 'LINESTRING', 2);
-
-/*
-    道路の線形を表すデータのレコード
-*/
-INSERT INTO geodb_catp_yokohama (route_name, has_spot, capacity, geometry_data)
-VALUES ('K1',
-        'none',
-        200,
-        ST_GeomFromText('LINESTRING(139.633639 35.445911, 139.632631 35.447126 ...... 139.632323 35.472085)', 4326));
-\end{lstlisting}
 
 %%% Local Variables:
 %%% mode: japanese-latex
