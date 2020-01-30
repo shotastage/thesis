@@ -15,9 +15,10 @@
 \end{itemize}
 
 
+
 \section{評価方法}
 
-本研究では既存の距離
+本研究では提案手法の有効性を示すため, ランダムに経路を決定する手法と最短距離を求める手法と比較し評価を行う.
 
 まず, DQNが選択した経路を表す出力~\ref{out:vector}を得る. 出力されたデータは入力と同じ17x17の正方行列である.
 ここでは, 出力された行列を行動行列と定義し, この行動行列のうち0でない要素に行動が記録されているので, 図~\ref{out:vector}の矢印が記録された
@@ -31,7 +32,7 @@
         \caption{DQNが選択した経路を表す行列}
         \label{out:vector}
     \end{minipage}
-    \begin{minipage}{0.5\hsize}
+    \begin{minipage}{0.5\hsize}/
         \begin{center}
             \includegraphics[width=70mm]{assets/action_vector_visualize.eps}
         \end{center}

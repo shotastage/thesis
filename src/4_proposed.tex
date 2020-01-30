@@ -35,6 +35,8 @@ DQNを用いて学習させた.
 
 以下に, 道路の正規化の手順を示す.
 
+\subsection{道路データのベクタライズアルゴリズム}
+
 図~\ref{rs:1}は実際の地図から本研究で取り上げる道路網を線で表したものである. 赤色の線は一度に通行できるcapacityが多い幹線道路としオレンジは赤色と比べて通行可能量が少ない.
 
 次に, 図~\ref{rs:2}は道路のT字路や十字路などの交差点の形は問わず交差点部分に青い円形のマークをつけた. 
@@ -47,6 +49,9 @@ DQNを用いて学習させた.
 
 図~\ref{rs:6}は~\ref{rs:5}似て変換された図形データを正方行列データに変換した物である. ここでは, 通行可能な要素を1とし通行不可能な壁0で隔てることにより道路網を表現している.
 なお, 道路外周に壁を作るために0パディングを行っている.
+
+本提案手法で想定されている道路形状は以下の通りである.
+
 
 \begin{figure}[htbp]
     \begin{minipage}{0.5\hsize}
@@ -102,6 +107,113 @@ DQNを用いて学習させた.
         \caption{7x7正方行列化した道路網}
         \label{rs:6}
     \end{minipage}
+\end{figure}
+
+
+
+
+\subsection{想定した道路線形}
+
+本研究で考案した道路データのベクタライズアルゴリズムに関しては, 以下の道路線形を想定した.
+以下に順を追って説明する.
+
+~\ref{Y}から~\ref{GradeSeparation}は道と交差・分岐点を表した模式図である. 赤色の線は道路を表し, 青い円は交差・分岐点を示す. なお立体交差地点のみ交差する線をそれぞれ異なる色で表している.
+
+~\ref{Y}はY字分岐である. この線形は1本の道から2本の道へと分岐を表す.
+~\ref{Merge}は合流点を表す. これは2本の道が合流し1本の道へとなる事を意味する.
+~\ref{RightCorner}は右折点を表す. これは2本の道が右方向へと右折する.
+また, ~\ref{LeftCorner}も同様に左折点を表す.
+~\ref{T}はT字路を表す.
+~\ref{Cross}は十字路を表し2本の線が交差し4方向に別れる道を想定している.
+~\ref{RouteEnd}は行き止まり地点を表しこれ以上行く事はできない. 本研究においては, エージェントはここを目的地とした場合以外では選択してはならない道である.
+~\ref{GradeSeparation}は立体交差構造である. 立体交差構造は上空からみた場合, 2本の線が交差し十字路と同じ形になるが, 実際には右左折する事は不可能である.
+
+
+
+\begin{figure}[htbp]
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_Y.eps}
+        \end{center}
+        \caption{分岐}
+        \label{Y}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_Merge.eps}
+        \end{center}
+        \caption{合流}
+        \label{Merge}
+    \end{minipage}
+\end{figure}
+
+
+
+
+\begin{figure}[htbp]
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_RightCorner.eps}
+        \end{center}
+        \caption{右折}
+        \label{RightCorner}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_LeftCorner.eps}
+        \end{center}
+        \caption{左折}
+        \label{LeftCorner}
+    \end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_T.eps}
+        \end{center}
+        \caption{T字}
+        \label{T}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_Cross.eps}
+        \end{center}
+        \caption{十字}
+        \label{Cross}
+    \end{minipage}
+\end{figure}
+
+
+
+
+\begin{figure}[htbp]
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_End.eps}
+        \end{center}
+        \caption{行き止まり}
+        \label{RouteEnd}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+        \begin{center}
+            \includegraphics[,height=50mm]{assets/road_shape_GradeSeparation.eps}
+        \end{center}
+        \caption{立体交差}
+        \label{GradeSeparation}
+    \end{minipage}
+\end{figure}
+
+
+しかしながら, 上記であげたパターンでは最高4方向への分離飲みしか想定されていない. 従って, 以下のパターンの道路線形は新たに仮想交差点を追加することにより表現を可能にした.
+
+
+\begin{figure}[H]
+    \centering  % 図を真ん中に配置
+    \includegraphics[clip,width = 13.0cm]{assets/Multiple_Road_Shape.eps}
+    \caption{4線以上の道路が1交差地点に合流する場合の変換}  \label{MultipleRoadMerge}
 \end{figure}
 
 
