@@ -42,3 +42,6 @@ verify:
 save:
 	git add .
 	git commit -m "Update on `date "+%Y%m%d_%H%M%S"`"
+
+up:
+	git push -u origin master
